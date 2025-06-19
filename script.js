@@ -1,8 +1,8 @@
-const API_URL = 'http://localhost:3000/posts';
+const API_URL = 'https://your-render-api.onrender.com/posts';
 
 const postList = document.getElementById('post-list');
 const postDetail = document.getElementById('post-detail');
-const form = document.getElementById('post-form'); // ✅ fixed ID
+const form = document.getElementById('post-form'); 
 const editForm = document.getElementById('edit-post-form');
 const editTitle = document.getElementById('edit-title');
 const editAuthor = document.getElementById('edit-author');
