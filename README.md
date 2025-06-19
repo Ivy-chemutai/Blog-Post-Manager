@@ -45,14 +45,14 @@ project-folder/
 ## Setup Instructions
 
 ### 1. Clone the Repository
-git clone https://github.com/YOUR_USERNAME/blog-manager.git
+git clone https://github.com/Ivy-chemutai/Blog-Post-Manager.git
 cd blog-manager
 ### 2. Install and Start JSON Server
 Make sure you have Node.js installed. Then:
 -npm install -g json-server@0.17.4
 - npx json-server --watch db.json
 This will start the backend at:
-http://localhost:3000/posts
+'https://your-render-api.onrender.com/posts'
 ### 3. Run the Frontend
 Use Live Server (or open index.html manually in your browser).
 ### Demo Preview
