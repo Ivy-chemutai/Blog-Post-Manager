@@ -2,7 +2,7 @@ const API_URL = 'http://localhost:3000/posts';
 
 const postList = document.getElementById('post-list');
 const postDetail = document.getElementById('post-detail');
-const form = document.getElementById('post-form'); 
+const form = document.getElementById('post-form'); // ✅ fixed ID
 const editForm = document.getElementById('edit-post-form');
 const editTitle = document.getElementById('edit-title');
 const editAuthor = document.getElementById('edit-author');
