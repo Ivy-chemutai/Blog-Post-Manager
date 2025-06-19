@@ -52,7 +52,7 @@ Make sure you have Node.js installed. Then:
 -npm install -g json-server@0.17.4
 - npx json-server --watch db.json
 This will start the backend at:
-'https://your-render-api.onrender.com/posts'
+http://localhost:3000/posts
 ### 3. Run the Frontend
 Use Live Server (or open index.html manually in your browser).
 ### Demo Preview
