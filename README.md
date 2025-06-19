@@ -1,3 +1,4 @@
+# Code-Challenge 3
 # Blog Manager App
 A simple frontend blog manager app that allows users to view, add, edit, and delete blog posts using a mock REST API powered by [JSON Server].
 ---
