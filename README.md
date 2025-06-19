@@ -81,3 +81,4 @@ DELETE /posts/:id – Delete a post
 Ivvy Joy,
 
 ## License
+MIT license
