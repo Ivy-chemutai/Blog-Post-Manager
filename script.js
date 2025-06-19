@@ -1,4 +1,4 @@
-const API_URL = 'https://your-render-api.onrender.com/posts';
+const API_URL = http://localhost:3000/posts
 
 const postList = document.getElementById('post-list');
 const postDetail = document.getElementById('post-detail');
