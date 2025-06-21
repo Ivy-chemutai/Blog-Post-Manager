@@ -10,16 +10,30 @@
   <div class="container">
     <h1>Blog Posts</h1>
 
-    <div>
-      <ul id="post-list"></ul>
-    </div>
+    <!-- Live Demo Link -->
+    <section id="demo">
+      <h2>Live Demo</h2>
+      <a href="https://ivy-chemutai.github.io/Blog-Post-Manager/" target="_blank">
+        <button>Open Live Preview</button>
+      </a>
+    </section>
 
-    <div id="post-detail">
-      <h2>Click a post to see its details</h2>
+    <!-- Flex Layout for Posts -->
+    <div class="main-content">
+      <!-- Sidebar List -->
+      <aside id="post-list-container">
+        <h3>All Posts</h3>
+        <ul id="post-list"></ul>
+      </aside>
+
+      <!-- Post Detail -->
+      <section id="post-detail">
+        <h2>Click a post to see its details</h2>
+      </section>
     </div>
 
     <!-- New Post Form -->
-    <form id="post-form">
+    <form id="post-form" class="form">
       <h3>Add a New Post</h3>
       <input type="text" id="title" name="title" placeholder="Post Title" required />
       <input type="text" id="author" name="author" placeholder="Author" required />
@@ -29,7 +43,7 @@
     </form>
 
     <!-- Edit Post Form -->
-    <form id="edit-post-form" class="hidden">
+    <form id="edit-post-form" class="form hidden">
       <h4>Edit Post</h4>
       <label for="edit-title">Title:</label>
       <input type="text" id="edit-title" required />
