@@ -5,6 +5,7 @@
   box-sizing: border-box;
 }
 
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
@@ -102,29 +103,19 @@ button {
   cursor: pointer;
 }
 
-button: hover {
+button:hover {
   background-color: #0056b3;
 }
 
 #edit-post-form.hidden {
   display: none;
 }
-
-
-#demo {
-  margin-bottom: 20px;
+img {
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-#demo button {
-  padding: 10px 16px;
-  background-color: #007bff;
-  border: none;
-  color: white;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-#demo button: hover {
-  background-color: #0056b3;
-}
