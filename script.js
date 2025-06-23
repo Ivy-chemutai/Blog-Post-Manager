@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000/posts";
+const BASE_URL = "http://localhost:3001/posts";
 let posts = [];
 
 // Load posts on start
