@@ -80,11 +80,15 @@ function attachDeleteListeners() {
 }
 
 function showPostDetail(post) {
+  if (!post || typeof post !== 'object') {
+    document.getElementById('post-detail').innerHTML = `<p class="text-gray-500">Invalid post data.</p>`;
+    return;
+  }
   document.getElementById('post-detail').innerHTML = `
-    <h3 class="text-xl font-bold text-gray-800">${post.title}</h3>
-    <p class="text-gray-600 mb-2">By <span class="font-medium">${post.author}</span></p>
-    ${post.image ? `<img src="${post.image}" alt="${post.title}" onerror="this.style.display='none'" class="w-full max-w-md rounded mb-4">` : ''}
-    <p class="text-gray-700">${post.content}</p>
+    <h3 class="text-xl font-bold text-gray-800">${post.title ? post.title : 'Untitled'}</h3>
+    <p class="text-gray-600 mb-2">By <span class="font-medium">${post.author ? post.author : 'Unknown'}</span></p>
+    ${post.image ? `<img src="${post.image}" alt="${post.title ? post.title : 'Post image'}" onerror="this.style.display='none'" class="w-full max-w-md rounded mb-4">` : ''}
+    <p class="text-gray-700">${post.content ? post.content : ''}</p>
     <button id="edit-post-btn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</button>
   `;
   attachEditButton(post);
@@ -109,69 +113,77 @@ function attachEditButton(post) {
 }
 
 // Edit post
-document.getElementById('edit-post-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const id = Number(document.getElementById('edit-post-id').value);
-  const title = document.getElementById('edit-title').value.trim();
-  const content = document.getElementById('edit-content').value.trim();
+const editPostForm = document.getElementById('edit-post-form');
+if (editPostForm) {
+  editPostForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const id = Number(document.getElementById('edit-post-id').value);
+    const title = document.getElementById('edit-title').value.trim();
+    const content = document.getElementById('edit-content').value.trim();
 
-  if (!title || !content) {
-    showMessage("Please fill in both title and content.");
-    return;
-  }
+    if (!title || !content) {
+      showMessage("Please fill in both title and content.");
+      return;
+    }
 
-  fetch(`${BASE_URL}/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, content })
-  })
-    .then(res => res.json())
-    .then(updated => {
-      const index = posts.findIndex(p => p.id === id);
-      posts[index] = updated;
-      renderPostTitles();
-      showPostDetail(updated);
-      showMessage("Post updated!");
-      document.getElementById('edit-post-form').classList.add('hidden');
+    fetch(`${BASE_URL}/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, content })
     })
-    .catch(() => showMessage("Failed to update post."));
-});
+      .then(res => res.json())
+      .then(updated => {
+        const index = posts.findIndex(p => p.id === id);
+        posts[index] = updated;
+        renderPostTitles();
+        showPostDetail(updated);
+        showMessage("Post updated!");
+        document.getElementById('edit-post-form').classList.add('hidden');
+      })
+      .catch(() => showMessage("Failed to update post."));
+  });
+}
 
 // Add new post
-document.getElementById('new-post-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const title = document.getElementById('new-title').value.trim();
-  const content = document.getElementById('new-content').value.trim();
-  const author = document.getElementById('new-author').value.trim();
-  const image = document.getElementById('new-image').value.trim();
+const newPostForm = document.getElementById('new-post-form');
+if (newPostForm) {
+  newPostForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const title = document.getElementById('new-title').value.trim();
+    const content = document.getElementById('new-content').value.trim();
+    const author = document.getElementById('new-author').value.trim();
+    const image = document.getElementById('new-image').value.trim();
 
-  if (!title || !content || !author) {
-    showMessage('Please fill in all required fields.');
-    return;
-  }
+    if (!title || !content || !author) {
+      showMessage('Please fill in all required fields.');
+      return;
+    }
 
-  const newPost = { title, content, author, image };
+    const newPost = { title, content, author, image };
 
-  fetch(BASE_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newPost)
-  })
-    .then(res => res.json())
-    .then(post => {
-      posts.push(post);
-      renderPostTitles();
-      showPostDetail(post);
-      this.reset();
-      showMessage('New post added!');
+    fetch(BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPost)
     })
-    .catch(() => showMessage("Failed to add post."));
-});
+      .then(res => res.json())
+      .then(post => {
+        posts.push(post);
+        renderPostTitles();
+        showPostDetail(post);
+        this.reset();
+        showMessage('New post added!');
+      })
+      .catch(() => showMessage("Failed to add post."));
+  });
+}
 
 // Show messages
 function showMessage(msg) {
   const box = document.getElementById('message-box');
-  document.getElementById('message-text').textContent = msg;
+  if (!box) return;
+  const msgText = document.getElementById('message-text');
+  if (msgText) msgText.textContent = msg;
   box.classList.remove('hidden');
   box.style.opacity = 1;
   setTimeout(() => {
@@ -180,6 +192,10 @@ function showMessage(msg) {
   }, 2000);
 }
 
-document.getElementById('close-message').onclick = function () {
-  document.getElementById('message-box').classList.add('hidden');
-};
+const closeMsgBtn = document.getElementById('close-message');
+if (closeMsgBtn) {
+  closeMsgBtn.onclick = function () {
+    const msgBox = document.getElementById('message-box');
+    if (msgBox) msgBox.classList.add('hidden');
+  };
+}
