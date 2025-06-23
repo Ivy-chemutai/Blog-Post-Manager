@@ -4,19 +4,23 @@
       "id": "1",
       "title": "Welcome to the Blog!",
       "author": "Admin",
-      "content": "This is your first blog post. Feel free to edit or delete it, or create your own!"
+      "content": "This is your first blog post. Feel free to edit or delete it, or create your own!",
+      "image": "https://13smithma.home.blog/wp-content/uploads/2018/09/welcome-to-my-blog.png"
     },
     {
-      "id": "2",
+      "id": "5c06",
       "title": "JavaScript Basics",
-      "author": "Ivy Chemutai",
-      "content": "Learn how to manipulate the DOM, handle events, and interact with APIs using vanilla JavaScript."
-    },
-    {
-      "id": "3",
-      "title": "Understanding JSON Server",
-      "author": "Dev Team",
-      "content": "JSON Server lets you spin up a fake REST API with a simple JSON file. Great for prototyping!"
-    }
-  ]
+          "content": "Learn how to manipulate the DOM, handle events, and interact with APIs using vanilla JavaScript",
+          "author": "Ivy Chemutai",
+          "image": "Images/Pasted image.png"
+        }
+      ,
+      {
+        "id": "3",
+        "title": "Understanding JSON Server",
+        "author": "Dev Team",
+        "content": "JSON Server lets you spin up a fake REST API with a simple JSON file. Great for prototyping!",
+        "image": "https://caodang.fpt.edu.vn/wp-content/uploads/1687824824172_602493dc23da6c7262555d4edeb673f9-e1692130472636.jpeg"
+      }
+    ]
 }
