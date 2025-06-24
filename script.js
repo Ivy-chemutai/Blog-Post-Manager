@@ -10,11 +10,12 @@ function main() {
 
 // Fetch and display all post titles
 function displayPosts() {
-  fetch(baseURL)
+fetch(baseURL)
     .then(res => res.json())
     .then(posts => {
       const postList = document.getElementById('post-list');
-      postList.innerHTML = ''; // Clear list
+      if (!postList) return;
+      postList.innerHTML = '';
 
       posts.forEach(post => {
         const postItem = document.createElement('div');
@@ -28,15 +29,22 @@ function displayPosts() {
       if (posts.length > 0) {
         handlePostClick(posts[0].id);
       }
+    })
+    .catch(error => {
+      console.error('Error fetching posts:', error);
     });
 }
 
-// Fetch and display post details
+// Fetch and display a single post's details
 function handlePostClick(postId) {
   fetch(`${baseURL}/${postId}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
     .then(post => {
       const detail = document.getElementById('post-detail');
+      if (!detail) return;
       detail.innerHTML = `
         <h2>${post.title}</h2>
         <p><strong>By:</strong> ${post.author}</p>
@@ -47,24 +55,37 @@ function handlePostClick(postId) {
       `;
 
       // Edit button
-      document.getElementById('edit-button').addEventListener('click', () => {
-        const editForm = document.getElementById('edit-post-form');
-        editForm.classList.remove('hidden');
-        editForm.dataset.postId = post.id;
-        document.getElementById('edit-title').value = post.title;
-        document.getElementById('edit-content').value = post.content;
-      });
+      const editBtn = document.getElementById('edit-button');
+      if (editBtn) {
+        editBtn.addEventListener('click', () => {
+          const editForm = document.getElementById('edit-post-form');
+          if (!editForm) return;
+          editForm.classList.remove('hidden');
+          editForm.dataset.postId = post.id;
+          document.getElementById('edit-title').value = post.title;
+          document.getElementById('edit-content').value = post.content;
+        });
+      }
 
       // Delete button
-      document.getElementById('delete-button').addEventListener('click', () => {
-        deletePost(post.id);
-      });
+      const deleteBtn = document.getElementById('delete-button');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+          if (confirm('Are you sure you want to delete this post?')) {
+            deletePost(post.id);
+          }
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching post:', error);
     });
 }
 
 // Listen to new post form submit
 function addNewPostListener() {
   const form = document.getElementById('new-post-form');
+  if (!form) return;
   form.addEventListener('submit', e => {
     e.preventDefault();
 
@@ -80,14 +101,82 @@ function addNewPostListener() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPost)
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
       .then(() => {
         displayPosts();
         form.reset();
+      })
+      .catch(error => {
+        console.error('Error creating post:', error);
+        alert('Error creating post.');
       });
   });
 }
 
+// Listen to edit form submit
+function addEditPostListener() {
+  const editForm = document.getElementById('edit-post-form');
+  if (!editForm) return;
+
+  editForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const postId = editForm.dataset.postId;
+
+    const updatedPost = {
+      title: document.getElementById('edit-title').value,
+      content: document.getElementById('edit-content').value
+    };
+
+    fetch(`${baseURL}/${postId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedPost)
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(() => {
+        displayPosts();
+        handlePostClick(postId);
+        editForm.classList.add('hidden');
+      })
+      .catch(error => {
+        console.error('Error updating post:', error);
+        alert('Error updating post.');
+      });
+  });
+
+  // Cancel edit
+  const cancelBtn = document.getElementById('cancel-edit');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      editForm.classList.add('hidden');
+    });
+  }
+}
+
+// Delete post from server and update DOM
+function deletePost(postId) {
+  fetch(`${baseURL}/${postId}`, {
+    method: 'DELETE'
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      displayPosts();
+      const detail = document.getElementById('post-detail');
+      if (detail) detail.innerHTML = '<p>Select a post to view its details</p>';
+      const editForm = document.getElementById('edit-post-form');
+      if (editForm) editForm.classList.add('hidden');
+    })
+    .catch(error => {
+      console.error('Error deleting post:', error);
+      alert('Error deleting post.');
+    });
+}
 // Listen to edit form submit
 function addEditPostListener() {
   const editForm = document.getElementById('edit-post-form');
